@@ -18,7 +18,7 @@ export function CreateNewTaskForm({ onCreateNewTask }: CreateNewTaskFormProps) {
   return (
     <form
       onSubmit={handleCreateNewTask}
-      className="-translate-y-7 flex flex-row items-center justify-center gap-2 mx-auto w-full h-[56px]"
+      className="-translate-y-7 -mt-[1px] sm:-mt-0 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 mx-auto w-full h-[56px] px-2"
     >
       <input
         name="new-task"
@@ -32,7 +32,7 @@ export function CreateNewTaskForm({ onCreateNewTask }: CreateNewTaskFormProps) {
         type="submit"
         title={!newTaskText ? "Preencha o campo ao lado esquerdo" : ""}
         disabled={!newTaskText}
-        className="h-full flex flex-row justify-center items-center gap-2 border-none bg-blue-700 rounded-lg p-4 text-gray-100 font-bold text-sm transition-all ease-linear outline-none disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-blue-700 hover:bg-blue-400 focus:ring-1 focus:ring-gray-100"
+        className="h-full w-full sm:w-max max-w-none sm:max-w-[638px] flex flex-row justify-center items-center gap-2 border-none bg-blue-700 rounded-lg p-4 text-gray-100 font-bold text-sm transition-all ease-linear outline-none disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-blue-700 hover:bg-blue-400 focus:ring-1 focus:ring-gray-100"
       >
         Criar
         <PlusCircle weight="bold" size={16} color="#F2F2F2" />

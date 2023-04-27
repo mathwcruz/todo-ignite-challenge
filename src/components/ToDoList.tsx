@@ -7,23 +7,24 @@ import clipboardImg from "../assets/clipboard.svg";
 
 interface ToDoListProps {
   toDoList: ToDoTaskInterface[];
+  onCompleteTask: (taskId: string, isTaskDone: boolean) => void;
   onDeleteTask: (taskId: string) => void;
 }
 
-export function ToDoList({ toDoList, onDeleteTask }: ToDoListProps) {
+export function ToDoList({ toDoList, onCompleteTask, onDeleteTask }: ToDoListProps) {
   const totalTasksCompleted: number = useMemo(
     () => toDoList?.filter((task) => !!task?.isDone)?.length,
     [toDoList]
   );
 
-  const toDoListSortted: ToDoTaskInterface[] = useMemo(
+  const toDoListOrderly: ToDoTaskInterface[] = useMemo(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     () => toDoList?.sort((a, _) => a?.isDone ? 1 : -1),
     [toDoList]
   );
 
   return (
-    <div className="mt-10 mb-6 w-full max-w-[736px] mx-auto">
+    <div className="mt-10 mb-6 w-full max-w-[736px] mx-auto px-2">
       <header className="w-full flex flex-row items-center justify-between gap-4 mb-6">
         <div className="flex flex-row items-center justify-center gap-2 font-bold text-sm leading-4 text-blue-400">
           Tarefas criadas{" "}
@@ -58,10 +59,11 @@ export function ToDoList({ toDoList, onDeleteTask }: ToDoListProps) {
         </div>
       ) : (
         <ul className="flex flex-col items-center justify-center gap-3">
-          {toDoListSortted?.map((task) => (
+          {toDoListOrderly?.map((task) => (
             <ToDoTask
               key={task?.id}
               task={task}
+              onCompleteTask={onCompleteTask}
               onDeleteTask={onDeleteTask}
             />
           ))}
