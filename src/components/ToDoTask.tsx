@@ -5,11 +5,11 @@ import { ToDoTaskInterface } from "../@types/Task";
 
 interface ToDoTaskProps {
   task: ToDoTaskInterface;
-  onCompleteTask: (taskId: string, isTaskDone: boolean) => void;
+  onToggleCompleteTask: (taskId: string, isTaskDone: boolean) => void;
   onDeleteTask: (taskId: string) => void;
 }
 
-export function ToDoTask({ task, onCompleteTask, onDeleteTask }: ToDoTaskProps) {
+export function ToDoTask({ task, onToggleCompleteTask, onDeleteTask }: ToDoTaskProps) {
   return (
     <li className="w-full flex flex-row items-start justify-between p-4 gap-3 bg-gray-500 rounded-lg border border-gray-400">
       <Checkbox.Root
@@ -17,7 +17,7 @@ export function ToDoTask({ task, onCompleteTask, onDeleteTask }: ToDoTaskProps) 
           task?.isDone ? "border-purple-700 bg-purple-700" : "border-blue-400"
         }`}
         checked={task?.isDone}
-        onCheckedChange={(checked: boolean) => onCompleteTask(task?.id, checked)}
+        onCheckedChange={(checked: boolean) => onToggleCompleteTask(task?.id, checked)}
       >
         <Checkbox.Indicator>
           <Check weight="bold" color="#F2F2F2" size={12} />

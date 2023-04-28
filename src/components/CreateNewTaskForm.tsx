@@ -30,7 +30,7 @@ export function CreateNewTaskForm({ onCreateNewTask }: CreateNewTaskFormProps) {
       />
       <button
         type="submit"
-        title={!newTaskText ? "Preencha o campo ao lado esquerdo" : ""}
+        title={!newTaskText ? "Preencha o campo do formulário" : ""}
         disabled={!newTaskText}
         className="h-full w-full sm:w-max max-w-none sm:max-w-[638px] flex flex-row justify-center items-center gap-2 border-none bg-blue-700 rounded-lg p-4 text-gray-100 font-bold text-sm transition-all ease-linear outline-none disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-blue-700 hover:bg-blue-400 focus:ring-1 focus:ring-gray-100"
       >

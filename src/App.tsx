@@ -1,10 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
 import { v4 as uuid } from "uuid";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { CreateNewTaskForm } from "./components/CreateNewTaskForm";
 import { Header } from "./components/Header";
 import { ToDoList } from "./components/ToDoList";
 import { ToDoTaskInterface } from "./@types/Task";
+import { ToastMessage } from "./@types/Toast";
+import { showToastMessage } from "./utils/toast";
+import { sortToDoList } from "./utils/task";
 
 export function App() {
   const [toDoList, setTodoList] = useState<ToDoTaskInterface[]>([]);
@@ -14,9 +19,15 @@ export function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const saveToDoListOnLocalStorage = useCallback((currentToDoList: ToDoTaskInterface[]) => {
-    localStorage.setItem("@todo-ignite-challenge#23", JSON.stringify(currentToDoList));
-  }, []);
+  const saveToDoListOnLocalStorage = useCallback(
+    (currentToDoList: ToDoTaskInterface[]) => {
+      localStorage.setItem(
+        "@todo-ignite-challenge#23",
+        JSON.stringify(currentToDoList)
+      );
+    },
+    []
+  );
 
   const getToDoListFromLocalStorage = useCallback(() => {
     const toDoListFromLocalStorageFormatted: ToDoTaskInterface[] = JSON.parse(
@@ -40,27 +51,44 @@ export function App() {
         isDone: false,
       };
 
-      const toDoListUpdatedAfterTaskCreation: ToDoTaskInterface[] = [...toDoList, newTaskToAdd];
+      const toDoListUpdatedAfterTaskCreation: ToDoTaskInterface[] =
+        sortToDoList([...toDoList, newTaskToAdd]);
 
       setTodoList(toDoListUpdatedAfterTaskCreation);
       saveToDoListOnLocalStorage(toDoListUpdatedAfterTaskCreation);
+      showToastMessage(ToastMessage.TASK_CREATED_SUCCESSFULLY);
     },
     [toDoList, saveToDoListOnLocalStorage]
   );
 
-  const handleCompleteTask = useCallback(
+  const handleToggleCompleteTask = useCallback(
     (taskId: string, isTaskDone: boolean) => {
       if (!taskId) {
         return;
       }
 
+      const taskToComplete: ToDoTaskInterface =
+        toDoList?.find((task) => task?.id === taskId) ||
+        ({} as ToDoTaskInterface);
+
       const toDoListUpdatedAfterTaskCompletion: ToDoTaskInterface[] =
-        toDoList?.map((task) =>
-          task?.id === taskId ? { ...task, isDone: isTaskDone } : task
+        sortToDoList(
+          toDoList?.map((task) =>
+            task?.id === taskToComplete?.id
+              ? { ...task, isDone: isTaskDone }
+              : task
+          )
         );
 
       setTodoList(toDoListUpdatedAfterTaskCompletion);
       saveToDoListOnLocalStorage(toDoListUpdatedAfterTaskCompletion);
+
+      if (isTaskDone) {
+        showToastMessage(
+          ToastMessage.TASK_COMPLETED_SUCCESSFULLY,
+          taskToComplete?.task
+        );
+      }
     },
     [toDoList, saveToDoListOnLocalStorage]
   );
@@ -71,11 +99,19 @@ export function App() {
         return;
       }
 
+      const taskToRemove: ToDoTaskInterface =
+        toDoList?.find((task) => task?.id === taskId) ||
+        ({} as ToDoTaskInterface);
+
       const toDoListUpdatedAfterTaskDeletion: ToDoTaskInterface[] =
-        toDoList?.filter((task) => task?.id !== taskId);
+        sortToDoList(toDoList?.filter((task) => task?.id !== taskToRemove?.id));
 
       setTodoList(toDoListUpdatedAfterTaskDeletion);
       saveToDoListOnLocalStorage(toDoListUpdatedAfterTaskDeletion);
+      showToastMessage(
+        ToastMessage.TASK_DELETED_SUCCESSFULLY,
+        taskToRemove?.task
+      );
     },
     [toDoList, saveToDoListOnLocalStorage]
   );
@@ -86,9 +122,10 @@ export function App() {
       <CreateNewTaskForm onCreateNewTask={handleCreateNewTask} />
       <ToDoList
         toDoList={toDoList}
-        onCompleteTask={handleCompleteTask}
+        onToggleCompleteTask={handleToggleCompleteTask}
         onDeleteTask={handleDeleteTask}
       />
+      <ToastContainer theme="dark" />
     </main>
   );
 }

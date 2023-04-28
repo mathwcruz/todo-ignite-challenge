@@ -7,11 +7,11 @@ import clipboardImg from "../assets/clipboard.svg";
 
 interface ToDoListProps {
   toDoList: ToDoTaskInterface[];
-  onCompleteTask: (taskId: string, isTaskDone: boolean) => void;
+  onToggleCompleteTask: (taskId: string, isTaskDone: boolean) => void;
   onDeleteTask: (taskId: string) => void;
 }
 
-export function ToDoList({ toDoList, onCompleteTask, onDeleteTask }: ToDoListProps) {
+export function ToDoList({ toDoList, onToggleCompleteTask, onDeleteTask }: ToDoListProps) {
   const totalTasksCompleted: number = useMemo(
     () => toDoList?.filter((task) => !!task?.isDone)?.length,
     [toDoList]
@@ -63,7 +63,7 @@ export function ToDoList({ toDoList, onCompleteTask, onDeleteTask }: ToDoListPro
             <ToDoTask
               key={task?.id}
               task={task}
-              onCompleteTask={onCompleteTask}
+              onToggleCompleteTask={onToggleCompleteTask}
               onDeleteTask={onDeleteTask}
             />
           ))}
