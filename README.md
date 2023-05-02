@@ -54,7 +54,7 @@ To run the application on the web, follow the instructions from your terminal:
 
 - `cd todo-ignite-challenge` and `code .`
 - run `npm i` to install the dependencies of the project
-- After that, run `npm run dev` to run the application, will open at the address `127.0.0.1:5173`
+- After that, run `npm run dev` to run the application, will open at the address `localhost:5173`
 
 ### Author
 
